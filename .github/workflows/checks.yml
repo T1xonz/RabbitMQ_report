@@ -1,0 +1,24 @@
+name: Python checks
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v9
+        with:
+          version: "0.13.1"
+          python-version: "3.14"
+      - run: uv sync --locked
+      - run: uv run --locked ruff check .
+      - run: uv run --locked ruff format --check .
+      - name: Check command-line entry points
+        run: |
+          uv run --locked rabbit-publish --help
+          uv run --locked rabbit-worker --help
+          uv run --locked rabbit-events read --help

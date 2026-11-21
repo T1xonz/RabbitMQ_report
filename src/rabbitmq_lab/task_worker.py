@@ -2,8 +2,7 @@ import argparse
 import json
 import os
 
-from lab_connection import open_connection
-
+from .lab_connection import open_connection
 
 QUEUE = "order_tasks"
 
@@ -36,7 +35,9 @@ def main():
             delivery_channel.basic_ack(delivery_tag=method.delivery_tag)
             print(f"ACK_SENT worker={name} task={task_id}", flush=True)
 
-        channel.basic_consume(queue=QUEUE, on_message_callback=handle_task, auto_ack=False)
+        channel.basic_consume(
+            queue=QUEUE, on_message_callback=handle_task, auto_ack=False
+        )
         print(f"WAIT worker={name} pid={pid} queue={QUEUE}", flush=True)
         try:
             channel.start_consuming()

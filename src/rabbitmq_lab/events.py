@@ -3,8 +3,7 @@ import json
 
 import pika
 
-from lab_connection import open_connection
-
+from .lab_connection import open_connection
 
 EXCHANGE = "orders.events"
 BINDINGS = {
